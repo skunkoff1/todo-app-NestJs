@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 export class CreateTodoDto {
   readonly id: number;
   readonly title: string;
