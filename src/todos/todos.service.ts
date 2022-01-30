@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UsePipes } from '@nestjs/common';
+import { NumberPipe } from 'src/number.pipe';
 import { CreateTodoDto } from './dto/CreateTodo.dto';
 import { Todo } from './interfaces/todo.interface';
 
@@ -19,8 +20,8 @@ export class TodosService {
     },
   ];
 
-  findOne(id: string) {
-    return this.todos.find((todos) => todos.id === Number(id));
+  findOne(id) {
+    return this.todos.find((todos) => todos.id === id);
   }
 
   findAll(): Todo[] {
@@ -31,8 +32,8 @@ export class TodosService {
     this.todos = [...this.todos, todo];
   }
 
-  update(id: string, todo: CreateTodoDto) {
-    const todoToUpdate = this.todos.find((todos) => todos.id === +id);
+  update(id, todo: CreateTodoDto) {
+    const todoToUpdate = this.todos.find((todos) => todos.id === id);
     if (!todoToUpdate) {
       return new NotFoundException('no todo found');
     }
@@ -52,9 +53,9 @@ export class TodosService {
     return { updatedTodos: 1, todo: todoToUpdate };
   }
 
-  delete(id: string) {
+  delete(id) {
     const nbOfTodosBeforeDelete = this.todos.length;
-    this.todos = [...this.todos.filter(todos => todos.id !== +id)];
+    this.todos = [...this.todos.filter(todos => todos.id !== id)];
     if(this.todos.length < nbOfTodosBeforeDelete) {
       return { deletedTodos: 1,nbTodos: this.todos.length };
     } else {

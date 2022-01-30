@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes } from '@nestjs/common';
+import { NumberPipe } from 'src/number.pipe';
 import { CreateTodoDto } from './dto/CreateTodo.dto';
 import { Todo } from './interfaces/todo.interface';
 import { TodosService } from './todos.service';
@@ -9,6 +10,7 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get(':id')
+  @UsePipes(NumberPipe)
   findOne(@Param('id') id: string) {
     return this.todosService.findOne(id);
   }
@@ -25,11 +27,13 @@ export class TodosController {
   }
 
   @Patch(':id')
+  @UsePipes(NumberPipe)
   updateOne(@Param('id') id: string, @Body() newTodo: CreateTodoDto) {
     return this.todosService.update(id, newTodo);
   }
 
   @Delete(':id')
+  @UsePipes(NumberPipe)
   deleteTodo(@Param('id') id: string) {
     return this.todosService.delete(id);
   }
